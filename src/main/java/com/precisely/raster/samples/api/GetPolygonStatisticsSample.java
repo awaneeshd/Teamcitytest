@@ -10,15 +10,17 @@ import com.precisely.raster.io.RasterBandInfo;
 import com.precisely.raster.io.RasterDataset;
 import com.precisely.raster.io.RasterPolygonStatistics;
 
-import static com.precisely.raster.samples.util.CommonUtils.BAND_INDEX;
-import static com.precisely.raster.samples.util.CommonUtils.COORDINATE_SYSTEM;
-import static com.precisely.raster.samples.util.CommonUtils.DATAFILE;
-import static com.precisely.raster.samples.util.CommonUtils.FIELD_INDEX;
-import static com.precisely.raster.samples.util.CommonUtils.FORMAT_OUTPUT;
-import static com.precisely.raster.samples.util.CommonUtils.ISOLATED_PROCESS;
-import static com.precisely.raster.samples.util.CommonUtils.POLYGON_WKB_STRING;
-import static com.precisely.raster.samples.util.CommonUtils.getRasterDataset;
-import static com.precisely.raster.samples.util.CommonUtils.setEnvironment;
+import static com.precisely.raster.samples.util.RasterUtility.BAND_INDEX;
+import static com.precisely.raster.samples.util.RasterUtility.COORDINATE_SYSTEM;
+import static com.precisely.raster.samples.util.RasterUtility.DATAFILE;
+import static com.precisely.raster.samples.util.RasterUtility.FIELD_INDEX;
+import static com.precisely.raster.samples.util.RasterUtility.FORMAT_OUTPUT;
+import static com.precisely.raster.samples.util.RasterUtility.ISOLATED_PROCESS;
+import static com.precisely.raster.samples.util.RasterUtility.POLYGON_WKB_STRING;
+import static com.precisely.raster.samples.util.RasterUtility.getRasterBandInfo;
+import static com.precisely.raster.samples.util.RasterUtility.getRasterDataset;
+import static com.precisely.raster.samples.util.RasterUtility.getRasterPolygonStatistics;
+import static com.precisely.raster.samples.util.RasterUtility.setEnvironment;
 
 public final class GetPolygonStatisticsSample {
 
@@ -47,12 +49,12 @@ public final class GetPolygonStatisticsSample {
         /*
          * Get the RasterBandInfo from the given Raster Dataset.
          */
-        RasterBandInfo rasterBandInfo = rasterDataset.getRasterInfo().getFieldInfos().get(FIELD_INDEX).getBandInfos().get(BAND_INDEX);
+        RasterBandInfo rasterBandInfo = getRasterBandInfo(rasterDataset);
 
         /*
          * GetPolygonStatistics from the given Raster Dataset.
          */
-        RasterPolygonStatistics polygonStatistics = rasterDataset.getPolygonStatistics(POLYGON_WKB_STRING, COORDINATE_SYSTEM, FIELD_INDEX, BAND_INDEX);
+        RasterPolygonStatistics polygonStatistics = getRasterPolygonStatistics(rasterDataset);
 
         /*
          * Display getPolygonStatistics for provided POLYGON_WKB_STRING and COORDINATE_SYSTEM.

@@ -10,16 +10,17 @@ import com.precisely.raster.io.RasterBandInfo;
 import com.precisely.raster.io.RasterDataset;
 import com.precisely.raster.io.RasterLineStatistics;
 
-import static com.precisely.raster.samples.util.CommonUtils.BAND_INDEX;
-import static com.precisely.raster.samples.util.CommonUtils.COORDINATE_SYSTEM;
-import static com.precisely.raster.samples.util.CommonUtils.DATAFILE;
-import static com.precisely.raster.samples.util.CommonUtils.FIELD_INDEX;
-import static com.precisely.raster.samples.util.CommonUtils.FORMAT_OUTPUT;
-import static com.precisely.raster.samples.util.CommonUtils.ISOLATED_PROCESS;
-import static com.precisely.raster.samples.util.CommonUtils.LINE_WKB_STRING;
-import static com.precisely.raster.samples.util.CommonUtils.SAMPLE_COUNT;
-import static com.precisely.raster.samples.util.CommonUtils.getRasterDataset;
-import static com.precisely.raster.samples.util.CommonUtils.setEnvironment;
+import static com.precisely.raster.samples.util.RasterUtility.BAND_INDEX;
+import static com.precisely.raster.samples.util.RasterUtility.COORDINATE_SYSTEM;
+import static com.precisely.raster.samples.util.RasterUtility.DATAFILE;
+import static com.precisely.raster.samples.util.RasterUtility.FIELD_INDEX;
+import static com.precisely.raster.samples.util.RasterUtility.FORMAT_OUTPUT;
+import static com.precisely.raster.samples.util.RasterUtility.ISOLATED_PROCESS;
+import static com.precisely.raster.samples.util.RasterUtility.LINE_WKB_STRING;
+import static com.precisely.raster.samples.util.RasterUtility.getRasterBandInfo;
+import static com.precisely.raster.samples.util.RasterUtility.getRasterDataset;
+import static com.precisely.raster.samples.util.RasterUtility.getRasterLineStatistics;
+import static com.precisely.raster.samples.util.RasterUtility.setEnvironment;
 
 public final class GetLineStatisticsSample {
 
@@ -48,14 +49,12 @@ public final class GetLineStatisticsSample {
         /*
          * Get the RasterBandInfo for the mentioned Band.
          */
-        RasterBandInfo rasterBandInfo = rasterDataset.getRasterInfo().getFieldInfos()
-                .get(FIELD_INDEX).getBandInfos().get(BAND_INDEX);
+        RasterBandInfo rasterBandInfo = getRasterBandInfo(rasterDataset);
 
         /*
          * getLineStatistics API call to get the required RasterLineStatistics Object.
          */
-        RasterLineStatistics statistics = rasterDataset.getLineStatistics(LINE_WKB_STRING,
-                COORDINATE_SYSTEM, FIELD_INDEX, BAND_INDEX, SAMPLE_COUNT);
+        RasterLineStatistics statistics = getRasterLineStatistics(rasterDataset);
 
         /*
          *  Display getLineStatistics Output for provided wkbString, coordinateSystem, sample count.

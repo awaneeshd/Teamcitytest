@@ -8,26 +8,25 @@ package com.precisely.raster.samples.api;
 
 import com.precisely.raster.io.RasterBandInfo;
 import com.precisely.raster.io.RasterCrossSection;
-import com.precisely.raster.io.RasterCrossSectionInfo;
 import com.precisely.raster.io.RasterDataset;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.precisely.raster.samples.util.CommonUtils.BANDS;
-import static com.precisely.raster.samples.util.CommonUtils.BAND_INDEX;
-import static com.precisely.raster.samples.util.CommonUtils.COORDINATE_SYSTEM;
-import static com.precisely.raster.samples.util.CommonUtils.CROSSSECTION_WKB_STRING;
-import static com.precisely.raster.samples.util.CommonUtils.DATAFILE;
-import static com.precisely.raster.samples.util.CommonUtils.DISTANCE_UNIT_CODE;
-import static com.precisely.raster.samples.util.CommonUtils.FIELD_INDEX;
-import static com.precisely.raster.samples.util.CommonUtils.FILTER_MODE;
-import static com.precisely.raster.samples.util.CommonUtils.FORMAT_OUTPUT;
-import static com.precisely.raster.samples.util.CommonUtils.ISOLATED_PROCESS;
-import static com.precisely.raster.samples.util.CommonUtils.READ_FROM_BASE_RESOLUTION_ONLY;
-import static com.precisely.raster.samples.util.CommonUtils.SAMPLE_COUNT;
-import static com.precisely.raster.samples.util.CommonUtils.getRasterDataset;
-import static com.precisely.raster.samples.util.CommonUtils.setEnvironment;
+import static com.precisely.raster.samples.util.RasterUtility.BANDS;
+import static com.precisely.raster.samples.util.RasterUtility.COORDINATE_SYSTEM;
+import static com.precisely.raster.samples.util.RasterUtility.CROSSSECTION_WKB_STRING;
+import static com.precisely.raster.samples.util.RasterUtility.DATAFILE;
+import static com.precisely.raster.samples.util.RasterUtility.DISTANCE_UNIT_CODE;
+import static com.precisely.raster.samples.util.RasterUtility.FIELD_INDEX;
+import static com.precisely.raster.samples.util.RasterUtility.FILTER_MODE;
+import static com.precisely.raster.samples.util.RasterUtility.FORMAT_OUTPUT;
+import static com.precisely.raster.samples.util.RasterUtility.ISOLATED_PROCESS;
+import static com.precisely.raster.samples.util.RasterUtility.READ_FROM_BASE_RESOLUTION_ONLY;
+import static com.precisely.raster.samples.util.RasterUtility.getRasterBandInfo;
+import static com.precisely.raster.samples.util.RasterUtility.getRasterCrossSection;
+import static com.precisely.raster.samples.util.RasterUtility.getRasterDataset;
+import static com.precisely.raster.samples.util.RasterUtility.setEnvironment;
 
 public final class GetCrossSectionInfoSample {
 
@@ -56,19 +55,16 @@ public final class GetCrossSectionInfoSample {
         /*
          * Get the RasterBandInfo from the given Raster Dataset.
          */
-        RasterBandInfo rasterBandInfo = rasterDataset.getRasterInfo().getFieldInfos().get(FIELD_INDEX).getBandInfos().get(BAND_INDEX);
-
-        /*
-         * Get the information about each sample point in form of List.
-         */
-        List<RasterCrossSectionInfo> crossSectionInfo = rasterDataset.getCrossSectionInfo(CROSSSECTION_WKB_STRING, COORDINATE_SYSTEM, FILTER_MODE,
-                FIELD_INDEX, BANDS, SAMPLE_COUNT, DISTANCE_UNIT_CODE, READ_FROM_BASE_RESOLUTION_ONLY);
+        RasterBandInfo rasterBandInfo = getRasterBandInfo(rasterDataset);
 
         /*
          * Get the List of sample points, their location and cell value.
          */
-        List<RasterCrossSection> crossSections = crossSectionInfo.get(0).getRasterCrossSections();
+        List<RasterCrossSection> crossSections = getRasterCrossSection(rasterDataset);
 
+        /*
+         *  Display getCrossSectionInfo Output for provided wkbString, coordinateSystem, etc.
+         */
         System.out.println("\n" + FORMAT_OUTPUT);
         System.out.println("\t\t\tGET CROSS SECTION INFO OUTPUT");
         System.out.println(FORMAT_OUTPUT);

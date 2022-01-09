@@ -6,25 +6,13 @@
  */
 package com.precisely.raster.samples.api;
 
-import com.precisely.raster.internal.midev_core.RasterExtent;
 import com.precisely.raster.io.RasterEngine;
-import com.precisely.raster.io.RasterEngines;
-import com.precisely.raster.renderer.RasterRenderer;
 
-import java.awt.image.BufferedImage;
-
-import static com.precisely.raster.samples.util.CommonUtils.ABSOLUTE_DATASET;
-import static com.precisely.raster.samples.util.CommonUtils.FORMAT_OUTPUT;
-import static com.precisely.raster.samples.util.CommonUtils.ISOLATED_PROCESS;
-import static com.precisely.raster.samples.util.CommonUtils.MAX_X;
-import static com.precisely.raster.samples.util.CommonUtils.MAX_Y;
-import static com.precisely.raster.samples.util.CommonUtils.MIN_X;
-import static com.precisely.raster.samples.util.CommonUtils.MIN_Y;
-import static com.precisely.raster.samples.util.CommonUtils.OUTPUT_DIRECTORY;
-import static com.precisely.raster.samples.util.CommonUtils.PIXEL_HEIGHT;
-import static com.precisely.raster.samples.util.CommonUtils.PIXEL_WIDTH;
-import static com.precisely.raster.samples.util.CommonUtils.saveRenderedImage;
-import static com.precisely.raster.samples.util.CommonUtils.setEnvironment;
+import static com.precisely.raster.samples.util.RasterUtility.ISOLATED_PROCESS;
+import static com.precisely.raster.samples.util.RasterUtility.RENDER_OUTPUT;
+import static com.precisely.raster.samples.util.RasterUtility.getRasterEngine;
+import static com.precisely.raster.samples.util.RasterUtility.renderRaster;
+import static com.precisely.raster.samples.util.RasterUtility.setEnvironment;
 
 public final class RasterRendererSample {
 
@@ -48,40 +36,11 @@ public final class RasterRendererSample {
         /*
          * Get the RasterEngine based on the isolated flag.
          */
-        RasterEngine rasterEngine = RasterEngines.getRasterEngine(ISOLATED_PROCESS);
+        RasterEngine rasterEngine = getRasterEngine(ISOLATED_PROCESS);
 
         /*
-         * Create the RasterRenderer using the rasterEngine for the given Raster file.
+         * Create RasterRenderer and save the image file the provided output directory.
          */
-        try (RasterRenderer rasterRenderer = rasterEngine.createRenderer(ABSOLUTE_DATASET)) {
-
-            /*
-             * Create a RasterExtent for the provided area using World Coordinates.
-             */
-            RasterExtent rasterExtent = new RasterExtent(MIN_X, MIN_Y, MAX_X, MAX_Y);
-
-            /*
-             * Render the raster using the rasterExtent and Pixel Information.
-             */
-            BufferedImage actualImage = rasterRenderer.render(PIXEL_WIDTH, PIXEL_HEIGHT,
-                    rasterExtent.getWidth(), rasterExtent.getHeight(), rasterExtent.getMinX(), rasterExtent.getMinY());
-
-            /*
-             * Save the rendered image to the output directory.
-             */
-            saveRenderedImage(actualImage);
-
-            /*
-             * Display the output message if Raster Renderer is successful.
-             */
-            System.out.println("\n" + FORMAT_OUTPUT);
-            System.out.println("\tRENDERED RASTER SAVED SUCCESSFULLY IN THE '" + OUTPUT_DIRECTORY + "' DIRECTORY.");
-            System.out.println(FORMAT_OUTPUT);
-
-        } catch (Exception e) {
-            System.out.println("Unable to render raster using provided information.");
-            System.out.println("Exception: " + e.getMessage());
-        }
+        renderRaster(rasterEngine, RENDER_OUTPUT);
     }
-
 }

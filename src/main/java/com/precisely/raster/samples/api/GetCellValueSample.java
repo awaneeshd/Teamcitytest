@@ -8,21 +8,20 @@ package com.precisely.raster.samples.api;
 
 
 import com.precisely.raster.io.CellValue;
-import com.precisely.raster.io.RandomBand;
 import com.precisely.raster.io.RasterBandInfo;
 import com.precisely.raster.io.RasterDataset;
-import com.precisely.raster.io.RasterPoint;
-import com.precisely.raster.io.RasterRandomIterator;
 
-import static com.precisely.raster.samples.util.CommonUtils.BAND_INDEX;
-import static com.precisely.raster.samples.util.CommonUtils.DATAFILE;
-import static com.precisely.raster.samples.util.CommonUtils.FIELD_INDEX;
-import static com.precisely.raster.samples.util.CommonUtils.FORMAT_OUTPUT;
-import static com.precisely.raster.samples.util.CommonUtils.ISOLATED_PROCESS;
-import static com.precisely.raster.samples.util.CommonUtils.WORLD_X;
-import static com.precisely.raster.samples.util.CommonUtils.WORLD_Y;
-import static com.precisely.raster.samples.util.CommonUtils.getRasterDataset;
-import static com.precisely.raster.samples.util.CommonUtils.setEnvironment;
+import static com.precisely.raster.samples.util.RasterUtility.BAND_INDEX;
+import static com.precisely.raster.samples.util.RasterUtility.DATAFILE;
+import static com.precisely.raster.samples.util.RasterUtility.FIELD_INDEX;
+import static com.precisely.raster.samples.util.RasterUtility.FORMAT_OUTPUT;
+import static com.precisely.raster.samples.util.RasterUtility.ISOLATED_PROCESS;
+import static com.precisely.raster.samples.util.RasterUtility.WORLD_X;
+import static com.precisely.raster.samples.util.RasterUtility.WORLD_Y;
+import static com.precisely.raster.samples.util.RasterUtility.getRasterCellValue;
+import static com.precisely.raster.samples.util.RasterUtility.getRasterBandInfo;
+import static com.precisely.raster.samples.util.RasterUtility.getRasterDataset;
+import static com.precisely.raster.samples.util.RasterUtility.setEnvironment;
 
 public final class GetCellValueSample {
 
@@ -51,12 +50,12 @@ public final class GetCellValueSample {
         /*
          * Get the RasterBandInfo from the given Raster Dataset.
          */
-        RasterBandInfo rasterBandInfo = rasterDataset.getRasterInfo().getFieldInfos().get(FIELD_INDEX).getBandInfos().get(BAND_INDEX);
+        RasterBandInfo rasterBandInfo = getRasterBandInfo(rasterDataset);
 
         /*
          * GetCellValue from the Raster Dataset.
          */
-        CellValue cellValue = getCellValue(rasterDataset);
+        CellValue cellValue = getRasterCellValue(rasterDataset);
 
         /*
          *  Display getCellValue for provided world co-ordinates.
@@ -71,31 +70,5 @@ public final class GetCellValueSample {
         System.out.println("\tWorld Coordinates (X,Y) : (" + WORLD_X + "," + WORLD_Y + ")");
         System.out.println("\tCellValue: " + cellValue.numberValue().floatValue());
         System.out.println(FORMAT_OUTPUT);
-    }
-
-    /**
-     * @param rasterDataset: Provided Raster Dataset.
-     * @return Object of CellValue.
-     */
-    private static CellValue getCellValue(RasterDataset rasterDataset) {
-        /*
-         * Create RasterPoint after converting World Co-ordinates to Cell Co-ordinates.
-         */
-        RasterPoint rasterPoint = rasterDataset.convertWorldToCell(WORLD_X, WORLD_Y);
-
-        /*
-         * Get RandomIterator for the RasterDataset.
-         */
-        RasterRandomIterator randomIterator = rasterDataset.getRandomIterator();
-
-        /*
-         * Get the RasterBand for the provided Band_Index.
-         */
-        RandomBand randomBand = randomIterator.getBand(BAND_INDEX);
-
-        /*
-         * Get CellValue using the calculated RandomBand and RasterPoint.
-         */
-        return randomBand.getCellValue((long) rasterPoint.getX(), (long) rasterPoint.getY());
     }
 }
